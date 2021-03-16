@@ -1,24 +1,24 @@
-# tensile test example for Fino, see https://caeplex.com/p/41dd1
+# 拉伸测试文件, see https://caeplex.com/p/41dd1
 MESH FILE_PATH tensile-test.msh  # mesh file in Gmsh format (either version 2.2 or 4.x)
 
-# uniform properties given as scalar variables
-E = 200e3   # [ MPa ] Young modulus = 200 GPa
-nu = 0.3    # Poisson’s ratio
+# 预定义参数
+E = 200e3   # [ MPa ] = 200 GPa 杨氏模量（Young's modulus），又称拉伸模量（tensile modulus）是弹性模量（elastic modulus or modulus of elasticity）中最常见的一种。 
+nu = 0.3    # 泊松比 泊松比是指材料在单向受拉或受压时，横向正应变与轴向正应变的绝对值的比值，也叫横向变形系数，它是反映材料横向变形的弹性常数
 
-# boundary conditions ("left" and "right" come from the names in the mesh)
-PHYSICAL_GROUP left  BC fixed       # fixed end
-PHYSICAL_GROUP right BC Fx=1e4      # [ N ] load in x+
+# 约束条件 ("left" 和 "right" 在msh文件中定义)
+PHYSICAL_GROUP left  BC fixed       # 固定端
+PHYSICAL_GROUP right BC Fx=1e4      # 负载端 方向为x+ 单位[ N ] 
 
-FINO_SOLVER PROGRESS_ASCII  # print ascii progress bars (optional) 
-FINO_STEP                   # solve
+FINO_SOLVER PROGRESS_ASCII  # 打印进度条  (可选) 
+FINO_STEP                   # 求解
 
-# compute reaction force at fixed end
+# 求解固定端的反作用力 
 FINO_REACTION PHYSICAL_GROUP left RESULT R
 
-# write results (Von Mises, principal and displacements) in a VTK file
+# 将计算结果(Von Mises, principal and displacements)写入到vtk文件中
 MESH_POST FILE_PATH tensile-test.vtk sigma sigma1 sigma2 sigma3 VECTOR u v w
 
-# print some results (otherwise output will be null)
+# 打印部分结果 (otherwise output will be null)
 PRINT "displ_max = " %.3f displ_max "mm"
 PRINT "sigma_max = " %.1f sigma_max "MPa"
 PRINT "principal1 at center = " %.8f sigma1(0,0,0) "MPa"
