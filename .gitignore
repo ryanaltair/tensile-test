@@ -1,4 +1,5 @@
 fino
+gmsh
 *.msh
 .DS_Store
 *.vtu
