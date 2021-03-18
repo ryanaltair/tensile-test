@@ -5,15 +5,15 @@ MESH FILE_PATH tensile-test.msh  # mesh file in Gmsh format (either version 2.2 
 E = 200e3   # [ MPa ] = 200 GPa 杨氏模量（Young's modulus），又称拉伸模量（tensile modulus）是弹性模量（elastic modulus or modulus of elasticity）中最常见的一种。 
 nu = 0.3    # 泊松比 泊松比是指材料在单向受拉或受压时，横向正应变与轴向正应变的绝对值的比值，也叫横向变形系数，它是反映材料横向变形的弹性常数
 
-# 约束条件 ("left" 和 "right" 在msh文件中定义)
-PHYSICAL_GROUP left  BC fixed       # 固定端
-PHYSICAL_GROUP right BC Fx=1e4      # 负载端 方向为x+ 单位[ N ] 
+# 约束条件 ("fixed" 和 "load" 在msh文件中定义)
+PHYSICAL_GROUP fixed  BC fixed       # 固定端
+PHYSICAL_GROUP load BC Fx=1e4      # 负载端 方向为x+ 单位[ N ] 
 
 FINO_SOLVER PROGRESS_ASCII  # 打印进度条  (可选) 
 FINO_STEP                   # 求解
 
-# 求解固定端的反作用力 
-FINO_REACTION PHYSICAL_GROUP left RESULT R
+# 求解固定端[fixed]的反作用力 赋值到R
+FINO_REACTION PHYSICAL_GROUP fixed RESULT R
 
 # 将计算结果(Von Mises, principal and displacements)写入到vtk文件中
 MESH_POST FILE_PATH tensile-test.vtk sigma sigma1 sigma2 sigma3 VECTOR u v w

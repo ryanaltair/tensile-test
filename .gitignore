@@ -1,3 +1,6 @@
 fino
 *.msh
 .DS_Store
+*.vtu
+*.vtk
+*.stl
